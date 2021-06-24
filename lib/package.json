@@ -1,0 +1,38 @@
+{
+  "name": "innet-jsx",
+  "version": "1.0.0",
+  "description": "JSX parser for innet",
+  "homepage": "https://github.com/d8corp/innet-jsx",
+  "author": "Mikhail Lysikov <d8corp@mail.ru>",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "index.es6.js",
+  "jsnext:main": "index.es6.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d8corp/innet-jsx.git"
+  },
+  "keywords": [
+    "parser",
+    "parse",
+    "innet",
+    "jsx",
+    "object",
+    "front-end"
+  ],
+  "bugs": {
+    "url": "https://github.com/d8corp/innet-jsx/issues"
+  },
+  "bin": {
+    "innet-jsx": "./bin/innet-jsx"
+  },
+  "dependencies": {
+    "acorn": "^8.4.0",
+    "acorn-walk": "^8.1.0",
+    "acorn-jsx": "^5.3.1",
+    "acorn-jsx-walk": "^2.0.0",
+    "commander": "^7.2.0",
+    "magic-string": "^0.25.7"
+  }
+}

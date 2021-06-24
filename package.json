@@ -1,0 +1,59 @@
+{
+  "name": "innet-jsx",
+  "version": "1.0.0",
+  "description": "JSX parser for innet",
+  "homepage": "https://github.com/d8corp/innet-jsx",
+  "author": "Mikhail Lysikov <d8corp@mail.ru>",
+  "license": "MIT",
+  "private": true,
+  "main": "index.js",
+  "module": "index.es6.js",
+  "jsnext:main": "index.es6.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "bin/release -rollup",
+    "test": "jest",
+    "patch": "bin/release -patch -rollup -publish",
+    "minor": "bin/release -minor -rollup -publish",
+    "major": "bin/release -major -rollup -publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d8corp/innet-jsx.git"
+  },
+  "keywords": [
+    "parser",
+    "parse",
+    "innet",
+    "jsx",
+    "object",
+    "front-end"
+  ],
+  "bugs": {
+    "url": "https://github.com/d8corp/innet-jsx/issues"
+  },
+  "bin": {
+    "innet-jsx": "./bin/innet-jsx"
+  },
+  "dependencies": {
+    "acorn": "^8.4.0",
+    "acorn-walk": "^8.1.0",
+    "acorn-jsx": "^5.3.1",
+    "acorn-jsx-walk": "^2.0.0",
+    "commander": "^7.2.0",
+    "magic-string": "^0.25.7"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@types/jest": "^26.0.23",
+    "core-js": "^3.15.1",
+    "jest": "^26.6.3",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.52.2",
+    "rollup-plugin-preserve-shebangs": "^0.2.0",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "ts-jest": "^26.5.6",
+    "typescript": "^4.3.4"
+  }
+}
