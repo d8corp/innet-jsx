@@ -1,9 +1,11 @@
 # innet-jsx
-[![NPM](https://img.shields.io/npm/v/innet-jsx.svg)](https://github.com/d8corp/innet-jsx/blob/main/CHANGELOG.md)
-[![downloads](https://img.shields.io/npm/dm/innet-jsx.svg)](https://www.npmjs.com/package/innet-jsx)
+[![NPM](https://img.shields.io/npm/v/innet-jsx.svg)](https://www.npmjs.com/package/innet-jsx)
+[![downloads](https://img.shields.io/npm/dm/innet-jsx.svg)](https://www.npmtrends.com/innet-jsx)
 [![license](https://img.shields.io/npm/l/innet-jsx)](https://github.com/d8corp/innet-jsx/blob/main/LICENSE)
 
 This utils help to convert `jsx` into `js` with [innet](https://www.npmjs.com/package/innet) rules.
+
+[CHANGELOG](https://github.com/d8corp/innet-jsx/blob/main/CHANGELOG.md)
 
 [![stars](https://img.shields.io/github/stars/d8corp/innet-jsx?style=social)](https://github.com/d8corp/innet-jsx/stargazers)
 [![watchers](https://img.shields.io/github/watchers/d8corp/innet-jsx?style=social)](https://github.com/d8corp/innet-jsx/watchers)
