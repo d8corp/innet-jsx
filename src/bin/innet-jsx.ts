@@ -17,10 +17,12 @@ program
   .option('-w, --watch', 'Watching of changes')
   .action((jsxFile, jsFile = jsxFile.replace(/\.jsx$/, '.js'), {map, watch}) => {
     function convert () {
-      const data = transform(fs.readFileSync(jsxFile, 'utf8'), jsxFile)
-      fs.writeFileSync(jsFile, data.code)
+      const data = transform(fs.readFileSync(jsxFile, 'utf8'), {jsFile, jsxFile})
       if (map) {
+        fs.writeFileSync(jsFile, data.code + `\n//# sourceMappingURL=${jsFile.replace(/^(.*\/)?([^\/]+)$/, '$2') + '.map'}`)
         fs.writeFileSync(jsFile + '.map', JSON.stringify(data.map))
+      } else {
+        fs.writeFileSync(jsFile, data.code)
       }
       console.log('Successful build')
     }

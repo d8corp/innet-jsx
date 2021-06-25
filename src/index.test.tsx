@@ -173,4 +173,16 @@ test />`).code).toBe(`{type: 'test', props: {
 test: true} }`)
     })
   })
+  describe('source map', () => {
+    test('simple', () => {
+      expect(transform(`<div />`, {jsFile: 'index.js', jsxFile: 'index.jsx'}).map).toEqual({
+        file: 'index.js',
+        mappings: "AAAA,QAAC,CAAC,CAAC,EAAC,CAAC",
+        names: [],
+        sources: ["index.jsx"],
+        sourcesContent: [`<div />`],
+        version: 3
+      })
+    })
+  })
 })

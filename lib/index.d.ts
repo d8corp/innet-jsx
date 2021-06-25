@@ -1,10 +1,24 @@
-import { SourceMap } from 'magic-string';
-import { Node, Parser } from 'acorn';
+import { SourceMap as MSSourceMap } from 'magic-string';
+import { Node, Parser, Options } from 'acorn';
 export declare const JSXParser: typeof Parser;
 export interface TransformResult {
     code: string;
-    map: SourceMap;
+    map: MSSourceMap;
 }
-export declare function parse(code: string): Node;
-export declare function transform(code: string, filePath?: string, parser?: typeof parse): TransformResult;
+export declare function parse(code: string, options?: Options): Node;
+export interface SourceMap {
+    version: number;
+    file: string;
+    sources: string[];
+    sourcesContent: string[];
+    names: string[];
+    mappings: string;
+}
+export interface TransformOption {
+    jsxFile?: string;
+    jsFile?: string;
+    parser?: typeof parse;
+    map?: SourceMap;
+}
+export declare function transform(code: string, { map, jsxFile, jsFile, parser }?: TransformOption): TransformResult;
 export default transform;

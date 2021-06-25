@@ -15,15 +15,10 @@ npm
 npm i -g innet-jsx
 ```
 
-yarn
-```bash
-yarn add -g innet-jsx
-```
-
 You can use `npx innet-jsx` instead of `innet-jsx` without installation.
 
 ## Usage
-You can use `Node.js` exports or `CLI` to convert `jsx` to `js`.
+You can use `Node.js` exports or `CLI` for conversion of `jsx` into `js`.
 
 ### CLI
 Run `innet-jsx` with `-v` option to see `innet-jsx` version you have.
