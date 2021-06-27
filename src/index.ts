@@ -67,7 +67,7 @@ export function transform (code: string, {map, jsxFile, jsFile, parser = parse}:
   try {
     ast = parser(code)
   } catch (err) {
-    err.message += ` in ${jsxFile}`
+    err.message += ` in file://${jsxFile}`
     throw err
   }
 
