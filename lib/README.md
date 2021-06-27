@@ -1,7 +1,13 @@
-# innet-jsx
-[![NPM](https://img.shields.io/npm/v/innet-jsx.svg)](https://github.com/d8corp/innet-jsx/blob/main/CHANGELOG.md)
-[![downloads](https://img.shields.io/npm/dm/innet-jsx.svg)](https://www.npmjs.com/package/innet-jsx)
+<a href="https://www.npmjs.com/package/innet"><img src="https://raw.githubusercontent.com/d8corp/innet/main/logo.svg" align="left" width="90" height="90" alt="InnetJs logo by Mikhail Lysikov"></a>
+
+# &nbsp; innet-jsx
+
+&nbsp;
+
+[![NPM](https://img.shields.io/npm/v/innet-jsx.svg)](https://www.npmjs.com/package/innet-jsx)
+[![downloads](https://img.shields.io/npm/dm/innet-jsx.svg)](https://www.npmtrends.com/innet-jsx)
 [![license](https://img.shields.io/npm/l/innet-jsx)](https://github.com/d8corp/innet-jsx/blob/main/LICENSE)
+[![license](https://img.shields.io/badge/Changelog-⋮-brightgreen)](https://changelogs.xyz/innet-jsx)
 
 This utils help to convert `jsx` into `js` with [innet](https://www.npmjs.com/package/innet) rules.
 
@@ -80,5 +86,6 @@ console.log(parse('<></>'))
 ```
 
 ## Issues
-If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/innet-jsx/issues).  
+If you find a bug or have a suggestion, please file an issue on [GitHub](https://github.com/d8corp/innet-jsx/issues).
+
 [![issues](https://img.shields.io/github/issues-raw/d8corp/innet-jsx)](https://github.com/d8corp/innet-jsx/issues)
