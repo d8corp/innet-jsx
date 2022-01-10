@@ -171,6 +171,7 @@ bar: "test"}
 test />`).code).toBe(`{type: 'test', props: {
 ...{},
 test: true} }`)
+      expect(transform(`<test foo='' />`).code).toBe(`{type: 'test', props: {foo: ''} }`)
     })
   })
   describe('source map', () => {

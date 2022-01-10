@@ -1,6 +1,6 @@
 {
   "name": "innet-jsx",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "JSX parser for innet",
   "homepage": "https://github.com/d8corp/innet-jsx",
   "author": "Mikhail Lysikov <d8corp@mail.ru>",
@@ -33,7 +33,7 @@
     "url": "https://github.com/d8corp/innet-jsx/issues"
   },
   "bin": {
-    "innet-jsx": "./bin/innet-jsx"
+    "innet-jsx": "bin/innet-jsx"
   },
   "dependencies": {
     "acorn": "^8.4.0",
@@ -45,8 +45,8 @@
     "merge-source-map": "^1.1.0"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/jest": "^26.0.23",
     "core-js": "^3.15.1",
     "jest": "^26.6.3",

@@ -58,7 +58,7 @@ function normaliseInput (code: string, map?: SourceMap): { code: string, map: So
   }
 }
 
-export function transform (code: string, {map, jsxFile, jsFile, parser = parse}: TransformOption = {}): TransformResult {
+export function transform (code: string, { map, jsxFile, jsFile, parser = parse }: TransformOption = {}): TransformResult {
   const jsxData = normaliseInput(code, map)
   const magicString = new MagicString(jsxData.code)
 
@@ -72,10 +72,10 @@ export function transform (code: string, {map, jsxFile, jsFile, parser = parse}:
   }
 
   simple(ast, {
-    JSXNamespacedName ({start}) {
+    JSXNamespacedName ({ start }) {
       throw Error(`innet does not support JSXNamespacedName ${jsxFile}:${start}`) // TODO: change start to line:column
     },
-    JSXText ({start, end, raw}) {
+    JSXText ({ start, end, raw }) {
       let value = raw.trim()
 
       if (value) {
@@ -90,7 +90,7 @@ export function transform (code: string, {map, jsxFile, jsFile, parser = parse}:
       magicString.remove(start, start + 1)
       magicString.remove(end - 1, end)
     },
-    JSXFragment ({children}) {
+    JSXFragment ({ children }) {
       let started = false
       for (let i = 1; i < children.length; i++) {
         const {type, start, raw} = children[i]
@@ -103,10 +103,10 @@ export function transform (code: string, {map, jsxFile, jsFile, parser = parse}:
         }
       }
     },
-    JSXOpeningFragment ({start, end}) {
+    JSXOpeningFragment ({ start, end }) {
       magicString.overwrite(start, end, '[')
     },
-    JSXClosingFragment ({start, end}) {
+    JSXClosingFragment ({ start, end }) {
       magicString.overwrite(start, end, ']')
     },
     JSXElement ({children, openingElement}) {
@@ -137,7 +137,7 @@ export function transform (code: string, {map, jsxFile, jsFile, parser = parse}:
         }
       }
     },
-    JSXOpeningElement ({start, end, name, selfClosing, attributes}) {
+    JSXOpeningElement ({ start, end, name, selfClosing, attributes }) {
       const fullName = name.type === 'JSXMemberExpression'
         ? `${name.object.name}.${name.property.name}`
         : name.name || ''
@@ -174,20 +174,22 @@ export function transform (code: string, {map, jsxFile, jsFile, parser = parse}:
         magicString.remove(end - 1, end)
       }
     },
-    JSXClosingElement ({start, end}) {
+    JSXClosingElement ({ start, end }) {
       magicString.overwrite(start, end, `}`)
     },
-    JSXAttribute ({name, value}) {
+    JSXAttribute ({ name, value }) {
       if (value) {
         magicString.overwrite(name.end, value.start, `: `)
         if (value.type === 'Literal') {
-          magicString.overwrite(value.start + 1, value.end - 1, value.value.replace(/\\/g, '\\\\'))
+          if (value.value) {
+            magicString.overwrite(value.start + 1, value.end - 1, value.value.replace(/\\/g, '\\\\'))
+          }
         }
       } else {
         magicString.appendLeft(name.end, ': true')
       }
     },
-    JSXSpreadAttribute ({start, end}) {
+    JSXSpreadAttribute ({ start, end }) {
       magicString.remove(start, start + 1)
       magicString.remove(end - 1, end)
     },

@@ -157,7 +157,9 @@ function transform(code, _a) {
             if (value) {
                 magicString.overwrite(name.end, value.start, ": ");
                 if (value.type === 'Literal') {
-                    magicString.overwrite(value.start + 1, value.end - 1, value.value.replace(/\\/g, '\\\\'));
+                    if (value.value) {
+                        magicString.overwrite(value.start + 1, value.end - 1, value.value.replace(/\\/g, '\\\\'));
+                    }
                 }
             }
             else {
@@ -181,7 +183,7 @@ function transform(code, _a) {
     };
 }
 
-var version = "1.1.1";
+var version = "1.1.2";
 
 commander.program
     .version(version, '-v, --version');
