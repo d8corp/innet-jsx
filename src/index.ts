@@ -1,8 +1,8 @@
-import MagicString, {SourceMap as MSSourceMap} from 'magic-string'
-import {Node, Parser, Options} from 'acorn'
+import MagicString, { SourceMap as MSSourceMap } from 'magic-string'
+import { Node, Parser, Options } from 'acorn'
 
 const { extend } = require('acorn-jsx-walk')
-const {base, simple} = require('acorn-walk')
+const { base, simple } = require('acorn-walk')
 const jsxParser = require('acorn-jsx')
 const merge = require('merge-source-map')
 
@@ -16,7 +16,7 @@ export interface TransformResult {
 }
 
 export function parse (code: string, options?: Options): Node {
-  return JSXParser.parse(code, Object.assign({ecmaVersion: 'latest'}, options))
+  return JSXParser.parse(code, Object.assign({ ecmaVersion: 'latest' }, options))
 }
 
 export interface SourceMap {
