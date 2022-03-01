@@ -178,6 +178,10 @@ export function transform (code: string, { map, jsxFile, jsFile, parser = parse 
       magicString.overwrite(start, end, `}`)
     },
     JSXAttribute ({ name, value }) {
+      if (name.name.includes('-')) {
+        magicString.overwrite(name.start, name.end, `'${name.name}'`)
+      }
+
       if (value) {
         magicString.overwrite(name.end, value.start, `: `)
         if (value.type === 'Literal') {

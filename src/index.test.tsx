@@ -173,6 +173,9 @@ test />`).code).toBe(`{type: 'test', props: {
 test: true} }`)
       expect(transform(`<test foo='' />`).code).toBe(`{type: 'test', props: {foo: ''} }`)
     })
+    test('dash props', () => {
+      expect(transform(`<test foo-bar='' />`).code).toBe(`{type: 'test', props: {'foo-bar': ''} }`)
+    })
   })
   describe('source map', () => {
     test('simple', () => {
