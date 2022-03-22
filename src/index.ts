@@ -72,9 +72,6 @@ export function transform (code: string, { map, jsxFile, jsFile, parser = parse 
   }
 
   simple(ast, {
-    JSXNamespacedName ({ start }) {
-      throw Error(`innet does not support JSXNamespacedName ${jsxFile}:${start}`) // TODO: change start to line:column
-    },
     JSXText ({ start, end, raw }) {
       let value = raw.trim()
 
@@ -178,16 +175,32 @@ export function transform (code: string, { map, jsxFile, jsFile, parser = parse 
       magicString.overwrite(start, end, `}`)
     },
     JSXAttribute ({ name, value }) {
+      const isNamespacedName = name.type === 'JSXNamespacedName'
+      let namespacedNameType
+
+      if (isNamespacedName) {
+        const {namespace} = name
+        name = name.name
+
+        namespacedNameType = namespace.name
+        magicString.overwrite(namespace.start, namespace.end + 1, '')
+      }
+
       if (name.name.includes('-')) {
         magicString.overwrite(name.start, name.end, `'${name.name}'`)
       }
 
       if (value) {
-        magicString.overwrite(name.end, value.start, `: `)
-        if (value.type === 'Literal') {
-          if (value.value) {
-            magicString.overwrite(value.start + 1, value.end - 1, value.value.replace(/\\/g, '\\\\'))
-          }
+        if (value.type !== 'Literal' && namespacedNameType === 'get') {
+          magicString.overwrite(name.end, value.start, ` () {return `)
+          magicString.appendLeft(name.start, 'get ')
+          magicString.appendLeft(value.end, '}')
+        } else {
+          magicString.overwrite(name.end, value.start, `: `)
+        }
+
+        if (value.type === 'Literal' && value.value) {
+          magicString.overwrite(value.start + 1, value.end - 1, value.value.replace(/\\/g, '\\\\'))
         }
       } else {
         magicString.appendLeft(name.end, ': true')

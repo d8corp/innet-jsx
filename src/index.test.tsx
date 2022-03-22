@@ -138,48 +138,63 @@ test: true}, children: [
 {type: 'bar' }
 ]}`)
     })
-    test('props', () => {
-      expect(transform(`<test test/>`).code).toBe(`{type: 'test', props: {test: true}}`)
-      expect(transform(`<test
+    describe('props', () => {
+      test('usual', () => {
+        expect(transform(`<test test/>`).code).toBe(`{type: 'test', props: {test: true}}`)
+        expect(transform(`<test
 test/>`).code).toBe(`{type: 'test', props: {
 test: true}}`)
-      expect(transform(`<test test />`).code).toBe(`{type: 'test', props: {test: true} }`)
-      expect(transform(`<test test='foo' />`).code).toBe(`{type: 'test', props: {test: 'foo'} }`)
-      expect(transform(`<test test="foo" />`).code).toBe(`{type: 'test', props: {test: "foo"} }`)
-      expect(transform(`<test test="foo\\" />`).code).toBe(`{type: 'test', props: {test: "foo\\\\"} }`)
-      expect(transform(`<test test={'foo'} />`).code).toBe(`{type: 'test', props: {test: 'foo'} }`)
-      expect(transform(`<test test={123} />`).code).toBe(`{type: 'test', props: {test: 123} }`)
-      expect(transform(`<test foo bar="test" />`).code).toBe(`{type: 'test', props: {foo: true, bar: "test"} }`)
-      expect(transform(`<test
+        expect(transform(`<test test />`).code).toBe(`{type: 'test', props: {test: true} }`)
+        expect(transform(`<test test='foo' />`).code).toBe(`{type: 'test', props: {test: 'foo'} }`)
+        expect(transform(`<test test="foo" />`).code).toBe(`{type: 'test', props: {test: "foo"} }`)
+        expect(transform(`<test test="foo\\" />`).code).toBe(`{type: 'test', props: {test: "foo\\\\"} }`)
+        expect(transform(`<test test={'foo'} />`).code).toBe(`{type: 'test', props: {test: 'foo'} }`)
+        expect(transform(`<test test={123} />`).code).toBe(`{type: 'test', props: {test: 123} }`)
+        expect(transform(`<test foo bar="test" />`).code).toBe(`{type: 'test', props: {foo: true, bar: "test"} }`)
+        expect(transform(`<test
 foo
 bar="test"
 />`).code).toBe(`{type: 'test', props: {
 foo: true,
 bar: "test"}
 }`)
-      expect(transform(`<test
+        expect(transform(`<test
  foo
 bar="test"
 />`).code).toBe(`{type: 'test', props: {
  foo: true,
 bar: "test"}
 }`)
-      expect(transform(`<test {...{}} />`).code).toBe(`{type: 'test', props: {...{}} }`)
-      expect(transform(`<test {...{}} test />`).code).toBe(`{type: 'test', props: {...{}, test: true} }`)
-      expect(transform(`<test
+        expect(transform(`<test {...{}} />`).code).toBe(`{type: 'test', props: {...{}} }`)
+        expect(transform(`<test {...{}} test />`).code).toBe(`{type: 'test', props: {...{}, test: true} }`)
+        expect(transform(`<test
 {...{}}
 test />`).code).toBe(`{type: 'test', props: {
 ...{},
 test: true} }`)
-      expect(transform(`<test foo='' />`).code).toBe(`{type: 'test', props: {foo: ''} }`)
-    })
-    test('dash props', () => {
-      expect(transform(`<test foo-bar='' />`).code).toBe(`{type: 'test', props: {'foo-bar': ''} }`)
+        expect(transform(`<test foo='' />`).code).toBe(`{type: 'test', props: {foo: ''} }`)
+      })
+      test('dash', () => {
+        expect(transform(`<test foo-bar />`).code).toBe(`{type: 'test', props: {'foo-bar': true} }`)
+        expect(transform(`<test foo-bar='' />`).code).toBe(`{type: 'test', props: {'foo-bar': ''} }`)
+      })
+      test('getter', () => {
+        expect(transform(`<test get:foo />`).code).toBe(`{type: 'test', props: {foo: true} }`)
+        expect(transform(`<test get:foo="test" />`).code).toBe(`{type: 'test', props: {foo: "test"} }`)
+        expect(transform(`<test get:foo='test' />`).code).toBe(`{type: 'test', props: {foo: 'test'} }`)
+        expect(transform(`<test get:foo={1 + 1} />`).code).toBe(`{type: 'test', props: {get foo () {return 1 + 1}} }`)
+        expect(transform(`<test get:foo={1 + 1} bar />`).code).toBe(`{type: 'test', props: {get foo () {return 1 + 1}, bar: true} }`)
+        expect(transform(`<test get:foo-bar={1 + 1} />`).code).toBe(`{type: 'test', props: {get 'foo-bar' () {return 1 + 1}} }`)
+
+        expect(transform(`<test set:foo />`).code).toBe(`{type: 'test', props: {foo: true} }`)
+        expect(transform(`<test set:foo="test" />`).code).toBe(`{type: 'test', props: {foo: "test"} }`)
+        expect(transform(`<test set:foo={1 + 1} />`).code).toBe(`{type: 'test', props: {foo: 1 + 1} }`)
+      })
     })
   })
   describe('source map', () => {
     test('simple', () => {
-      expect(transform(`<div />`, {jsFile: 'index.js', jsxFile: 'index.jsx'}).map).toEqual({
+      expect(transform(`<div />`, { jsFile: 'index.js', jsxFile: 'index.jsx' }).map).toEqual({
         file: 'index.js',
         mappings: "AAAA,QAAC,CAAC,CAAC,EAAC,CAAC",
         names: [],
