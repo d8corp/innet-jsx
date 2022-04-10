@@ -80,9 +80,51 @@ console.log(transform('<></>'))
 
 If you want to get **Abstract Syntax Tree (AST)**, use `parse` function.
 ```typescript jsx
-import {parse} from 'innet-jsx'
+import { parse } from 'innet-jsx'
 
 console.log(parse('<></>'))
+```
+
+## Rules
+
+A fragment converts to an array
+```typescript jsx
+<></> // []
+<>1</> // ['1']
+<>{1}</> // [1]
+<>{1}{2}</> // [1,2]
+<>{1} {2}</> // [1,' ',2]
+<> {1} {2} </> // [1,' ',2]
+<>
+  {1}
+  {2}
+</> // [1,' ',2]
+```
+
+An element converts to an object
+```typescript jsx
+<div /> // {type:'div'}
+<div></div> // {type:'div'}
+```
+
+Children of an element contains in `children` field
+```typescript jsx
+<div>1</div> // {type:'div',children:['1']}
+<div>{2}</div> // {type:'div',children:[2]}
+<div><span /></div>
+// {type:'div',children:[{type:'span'}]}
+```
+
+Props of an element contains in `props` field
+```typescript jsx
+<div id='test' /> // {type:'div',props:{id:'test'}}
+
+<div id="test1" class={"test2"} />
+// {type:'div',props:{id:"test1",class:"test2"}}
+
+const test = 1;
+<div children={<>test: {test}</>} />
+// {type:'div',props:{children:['test: ',test]}}
 ```
 
 ## Issues

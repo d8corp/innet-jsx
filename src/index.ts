@@ -72,15 +72,26 @@ export function transform (code: string, { map, jsxFile, jsFile, parser = parse 
   }
 
   simple(ast, {
-    JSXText ({ start, end, raw }) {
-      let value = raw.trim()
+    JSXText (data) {
+      const { start, end, raw } = data
+      if (raw) {
+        const keepRightSpace = jsxData.code[end] === '{'
+        const keepLeftSpace = jsxData.code[start - 1] === '}'
+        let targetValue = raw
+          .replace(/('|\\)/g, "\\$1")
+          .replace(/\n/g, '')
+          .replace(/(\s)+/g, ' ')
 
-      if (value) {
-        const spaceStart = raw.length - raw.trimLeft().length
-        const spaceEnd = raw.length - value.length - spaceStart
-        const targetValue = value.replace(/('|\\)/g, "\\$1").replace(/\n(\s*)/g, "'+\n$1'")
+        if (!keepLeftSpace) {
+          targetValue = targetValue.replace(/^(\s)+/g, '')
+        }
+        if (!keepRightSpace) {
+          targetValue = targetValue.replace(/(\s)+$/g, '')
+        }
 
-        magicString.overwrite(start + spaceStart, end - spaceEnd, `'${targetValue}'`)
+        data.result = targetValue
+
+        magicString.overwrite(start, end, targetValue ? `'${targetValue}'` : '')
       }
     },
     JSXExpressionContainer ({start, end}) {
@@ -89,9 +100,11 @@ export function transform (code: string, { map, jsxFile, jsFile, parser = parse 
     },
     JSXFragment ({ children }) {
       let started = false
-      for (let i = 1; i < children.length; i++) {
-        const {type, start, raw} = children[i]
-        if (type !== 'JSXText' || raw.trim()) {
+
+      for (let i = 0; i < children.length; i++) {
+        const { type, start, result } = children[i]
+
+        if (type !== 'JSXText' || result) {
           if (started) {
             magicString.appendLeft(start, ',')
           } else {
@@ -106,32 +119,24 @@ export function transform (code: string, { map, jsxFile, jsFile, parser = parse 
     JSXClosingFragment ({ start, end }) {
       magicString.overwrite(start, end, ']')
     },
-    JSXElement ({children, openingElement}) {
+    JSXElement ({ children, openingElement }) {
       let childrenStarted = false
-      let childrenStart
-      let childrenEnd
+      let lastEnd
       for (let i = 0; i < children.length; i++) {
-        const {type, start, end, raw} = children[i]
-
-        if (!i) {
-          childrenStart = start
-        }
-        if (i + 1 === children.length) {
-          childrenEnd = end
-        }
-
-        if (type !== 'JSXText' || raw.trim()) {
+        const { type, start, end, result } = children[i]
+        lastEnd = end
+        if (type !== 'JSXText' || result) {
           if (!childrenStarted) {
-            magicString.appendLeft(openingElement.end, ', children: [')
+            magicString.appendLeft(openingElement.end, ',children:[')
             childrenStarted = true
           } else {
             magicString.appendLeft(start, ',')
           }
         }
+      }
 
-        if (childrenStarted && i + 1 === children.length) {
-          magicString.appendRight(end, ']')
-        }
+      if (childrenStarted) {
+        magicString.appendRight(lastEnd, ']')
       }
     },
     JSXOpeningElement ({ start, end, name, selfClosing, attributes }) {
@@ -140,21 +145,23 @@ export function transform (code: string, { map, jsxFile, jsFile, parser = parse 
         : name.name || ''
       const stringSym = /[a-z]/.test(fullName[0]) ? "'" : ''
 
-      magicString.overwrite(start, start + 1, '{type: ')
+      magicString.overwrite(start, start + 1, '{type:')
       if (stringSym) {
         magicString.appendLeft(name.start, stringSym)
         magicString.appendLeft(name.end, stringSym)
       }
 
+      let lastEnd = name.end
+
       if (attributes) {
         for (let i = 0; i < attributes.length; i++) {
           const attribute = attributes[i]
-          if (!i) {
-            if (!code.slice(name.end, attribute.start).includes('\n')) {
-              magicString.remove(attribute.start - 1, attribute.start)
-            }
 
-            magicString.appendLeft(name.end, ', props: {')
+          magicString.remove(lastEnd, attribute.start)
+          lastEnd = attribute.end
+
+          if (!i) {
+            magicString.appendLeft(name.end, ',props:{')
           } else {
             magicString.appendLeft(attribute.start - 1, ',')
           }
@@ -166,9 +173,9 @@ export function transform (code: string, { map, jsxFile, jsFile, parser = parse 
       }
 
       if (selfClosing) {
-        magicString.overwrite(end - 2, end, `}`)
+        magicString.overwrite(lastEnd, end, `}`)
       } else {
-        magicString.remove(end - 1, end)
+        magicString.remove(lastEnd, end)
       }
     },
     JSXClosingElement ({ start, end }) {
@@ -192,18 +199,18 @@ export function transform (code: string, { map, jsxFile, jsFile, parser = parse 
 
       if (value) {
         if (value.type !== 'Literal' && namespacedNameType === 'get') {
-          magicString.overwrite(name.end, value.start, ` () {return `)
+          magicString.overwrite(name.end, value.start, `(){return `)
           magicString.appendLeft(name.start, 'get ')
           magicString.appendLeft(value.end, '}')
         } else {
-          magicString.overwrite(name.end, value.start, `: `)
+          magicString.overwrite(name.end, value.start, `:`)
         }
 
         if (value.type === 'Literal' && value.value) {
           magicString.overwrite(value.start + 1, value.end - 1, value.value.replace(/\\/g, '\\\\'))
         }
       } else {
-        magicString.appendLeft(name.end, ': true')
+        magicString.appendLeft(name.end, ':true')
       }
     },
     JSXSpreadAttribute ({ start, end }) {

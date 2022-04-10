@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.3
+
+### v1.3.0 [![10.04.2022](https://img.shields.io/date/1649587842)](https://github.com/d8corp/innet-jsx/tree/v1.3.0)
+- changed space handling algorithm
+  ```typescript jsx
+  <>
+    Hello {'World'}!
+  </>
+  ```
+  converts to
+  ```typescript jsx
+  ['Hello ','World','!']
+  ```
+
 ## v1.2
 
 ### v1.2.0 [![22.03.2022](https://img.shields.io/date/1647978691)](https://github.com/d8corp/innet-jsx/tree/v1.2.0)
