@@ -2,7 +2,12 @@
 
 ## v1.3
 
+### v1.3.1 [![18.08.2022](https://img.shields.io/date/1660840746)](https://github.com/d8corp/innet-jsx/tree/v1.3.1)
+
+- temp fix jest map error
+
 ### v1.3.0 [![10.04.2022](https://img.shields.io/date/1649587842)](https://github.com/d8corp/innet-jsx/tree/v1.3.0)
+
 - changed space handling algorithm
   ```typescript jsx
   <>

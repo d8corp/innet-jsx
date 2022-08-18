@@ -48,7 +48,11 @@ function normaliseInput (code: string, map?: SourceMap): { code: string, map: So
   if (lastString.startsWith(BASE64_SOURCEMAP_STARTS_WITH)) {
     code = code.slice(0, inlineSourceMapIndex)
     if (!map) {
-      map = JSON.parse(base64ToMap(lastString.slice(BASE64_SOURCEMAP_STARTS_WITH.length)))
+      try {
+        map = JSON.parse(base64ToMap(lastString.slice(BASE64_SOURCEMAP_STARTS_WITH.length)))
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 
