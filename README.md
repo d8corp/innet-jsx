@@ -78,6 +78,17 @@ console.log(transform('<></>'))
 ```
 *You will get an object with 2 fields: code (contains result of transformation) and map (contains map data)*
 
+You can pass to `transform` an object with the next fields: `code`, `map` (optional).
+
+```typescript jsx
+import transform from 'innet-jsx'
+
+console.log(transform({
+  code: '<></>',
+  map: '...',
+}))
+```
+
 If you want to get **Abstract Syntax Tree (AST)**, use `parse` function.
 ```typescript jsx
 import { parse } from 'innet-jsx'

@@ -12,7 +12,7 @@ extend(base)
 
 export interface TransformResult {
   code: string
-  map: MSSourceMap
+  map?: MSSourceMap
 }
 
 export function parse (code: string, options?: Options): Node {
@@ -62,7 +62,12 @@ function normaliseInput (code: string, map?: SourceMap): { code: string, map: So
   }
 }
 
-export function transform (code: string, { map, jsxFile, jsFile, parser = parse }: TransformOption = {}): TransformResult {
+export function transform (code: TransformResult | string, { map, jsxFile, jsFile, parser = parse }: TransformOption = {}): TransformResult {
+  if (typeof code === 'object') {
+    map = map || code.map
+    code = code.code
+  }
+
   const jsxData = normaliseInput(code, map)
   const magicString = new MagicString(jsxData.code)
 
