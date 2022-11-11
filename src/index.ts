@@ -37,9 +37,9 @@ export interface TransformOption {
 
 const BASE64_SOURCEMAP_STARTS_WITH = '//# sourceMappingURL=data:application/json;charset=utf-8;base64,'
 
-const base64ToMap = typeof btoa === 'undefined'
-  ? value => Buffer.from(value, 'base64').toString()
-  : value => btoa(value)
+const base64ToMap = typeof Buffer === 'undefined'
+  ? value => btoa(value)
+  : value => Buffer.from(value, 'base64').toString()
 
 function normaliseInput (code: string, map?: SourceMap): { code: string, map: SourceMap } {
   const inlineSourceMapIndex = code.lastIndexOf('\n') + 1
@@ -47,12 +47,9 @@ function normaliseInput (code: string, map?: SourceMap): { code: string, map: So
 
   if (lastString.startsWith(BASE64_SOURCEMAP_STARTS_WITH)) {
     code = code.slice(0, inlineSourceMapIndex)
+
     if (!map) {
-      try {
-        map = JSON.parse(base64ToMap(lastString.slice(BASE64_SOURCEMAP_STARTS_WITH.length)))
-      } catch (e) {
-        console.log(e)
-      }
+      map = JSON.parse(base64ToMap(lastString.slice(BASE64_SOURCEMAP_STARTS_WITH.length)))
     }
   }
 

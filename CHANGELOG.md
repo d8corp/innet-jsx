@@ -2,6 +2,10 @@
 
 ## v1.3
 
+### v1.3.3 [![11.11.2022](https://img.shields.io/date/1668166492)](https://github.com/d8corp/innet-jsx/tree/v1.3.3)
+
+- fix jest map error
+
 ### v1.3.2 [![19.08.2022](https://img.shields.io/date/1660896288)](https://github.com/d8corp/innet-jsx/tree/v1.3.2)
 
 - add object handling of `transform`
