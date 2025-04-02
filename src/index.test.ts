@@ -158,6 +158,12 @@ test />`).code).toBe(`{type:'test',props:{...{},test:true}}`)
         expect(transform(`<test set:foo={1 + 1} />`).code).toBe(`{type:'test',props:{foo:1 + 1}}`)
       })
     })
+    it('should add parentheses', () => {
+      expect(transform('() => <div />').code).toBe("() => ({type:'div'})")
+      expect(transform('() => (<div />)').code).toBe("() => ({type:'div'})")
+      expect(transform('() => ( <div /> )').code).toBe("() => ( {type:'div'} )")
+      expect(transform('() => <>123</>').code).toBe("() => ['123']")
+    });
   })
   describe('source map', () => {
     test('simple', () => {

@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4
+
+### v1.4.0 [![03.04.2025](https://img.shields.io/date/1743628601)](https://github.com/d8corp/innet-jsx/tree/v1.4.0)
+
+- fix an error when you use arrow function with `JSX` body
+
 ## v1.3
 
 ### v1.3.3 [![11.11.2022](https://img.shields.io/date/1668166492)](https://github.com/d8corp/innet-jsx/tree/v1.3.3)

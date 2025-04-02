@@ -1,21 +1,23 @@
 {
   "name": "innet-jsx",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "description": "JSX parser for innet",
   "homepage": "https://github.com/d8corp/innet-jsx",
   "author": "Mikhail Lysikov <d8corp@mail.ru>",
   "license": "MIT",
   "private": true,
   "main": "index.js",
-  "module": "index.es6.js",
-  "jsnext:main": "index.es6.js",
+  "module": "index.mjs",
+  "esnext": "index.mjs",
+  "jsnext:main": "index.mjs",
   "types": "index.d.ts",
   "scripts": {
-    "build": "bin/release -rollup",
+    "build": "innetjs release",
     "test": "jest",
-    "patch": "bin/release -patch -rollup -publish",
-    "minor": "bin/release -minor -rollup -publish",
-    "major": "bin/release -major -rollup -publish"
+    "release": "innetjs release -p",
+    "patch": "innetjs patch",
+    "minor": "innetjs minor",
+    "major": "innetjs major"
   },
   "repository": {
     "type": "git",
@@ -45,16 +47,13 @@
     "merge-source-map": "^1.1.0"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
+    "innetjs": "^2.6.0-alpha.16",
     "@types/jest": "^26.0.23",
     "core-js": "^3.15.1",
     "jest": "^26.6.3",
     "rimraf": "^3.0.2",
-    "rollup": "^2.52.2",
-    "rollup-plugin-preserve-shebangs": "^0.2.0",
-    "rollup-plugin-typescript2": "^0.30.0",
     "ts-jest": "^26.5.6",
+    "tslib": "^2.6.1",
     "typescript": "^4.3.4"
   }
 }

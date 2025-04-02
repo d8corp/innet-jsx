@@ -1,20 +1,12 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-require('./_virtual/_rollup-plugin-process-env.js');
-var MagicString = require('magic-string');
-var acorn = require('acorn');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var MagicString__default = /*#__PURE__*/_interopDefaultLegacy(MagicString);
+import './_virtual/_rollup-plugin-process-env.mjs';
+import MagicString from 'magic-string';
+import { Parser } from 'acorn';
 
 const { extend } = require('acorn-jsx-walk');
 const { base, simple } = require('acorn-walk');
 const jsxParser = require('acorn-jsx');
 const merge = require('merge-source-map');
-const JSXParser = acorn.Parser.extend(jsxParser());
+const JSXParser = Parser.extend(jsxParser());
 extend(base);
 function parse(code, options) {
     return JSXParser.parse(code, Object.assign({ ecmaVersion: 'latest' }, options));
@@ -43,7 +35,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
         code = code.code;
     }
     const jsxData = normaliseInput(code, map);
-    const magicString = new MagicString__default["default"](jsxData.code);
+    const magicString = new MagicString(jsxData.code);
     let ast;
     try {
         ast = parser(code);
@@ -211,7 +203,4 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
     };
 }
 
-exports.JSXParser = JSXParser;
-exports["default"] = transform;
-exports.parse = parse;
-exports.transform = transform;
+export { JSXParser, transform as default, parse, transform };

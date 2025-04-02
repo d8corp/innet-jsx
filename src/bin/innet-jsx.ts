@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 import transform from '..'
 import fs from 'fs'
-import {version} from '../../package.json'
-import {program} from 'commander'
+import { program } from 'commander'
 
 program
-  .version(version, '-v, --version')
+  .version(process.env.INNETJS_JSX_PACKAGE_VERSION, '-v, --version')
 
 program
   .arguments('<jsx-file> [js-file]')

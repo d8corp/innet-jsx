@@ -152,6 +152,7 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
       const stringSym = /[a-z]/.test(fullName[0]) ? "'" : ''
 
       magicString.overwrite(start, start + 1, '{type:')
+
       if (stringSym) {
         magicString.appendLeft(name.start, stringSym)
         magicString.appendLeft(name.end, stringSym)
@@ -222,6 +223,19 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
     JSXSpreadAttribute ({ start, end }) {
       magicString.remove(start, start + 1)
       magicString.remove(end - 1, end)
+    },
+    ArrowFunctionExpression ({ body }) {
+      if (body?.type === 'JSXElement') {
+        for (let i = body.start; i > 0; i--) {
+          if (jsxData.code[i] === '(') return
+
+          if (jsxData.code[i] === '>') {
+            magicString.appendLeft(body.start, '(')
+            magicString.appendRight(body.end, ')')
+            break
+          }
+        }
+      }
     },
   })
 
