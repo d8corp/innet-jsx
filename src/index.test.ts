@@ -77,37 +77,37 @@ describe('innet-jsx', () => {
 </test>`).code).toBe(`{type:'test'}`)
     })
     test('inline children', () => {
-      expect(transform('<test>foo</test>').code).toBe("{type:'test',children:['foo']}")
+      expect(transform('<test>foo</test>').code).toBe("{type:'test',props:{children:['foo']}}")
       expect(transform(`<test>
   foo
-</test>`).code).toBe(`{type:'test',children:['foo']}`)
+</test>`).code).toBe(`{type:'test',props:{children:['foo']}}`)
       expect(transform(`<test>
 
   foo
 
-</test>`).code).toBe(`{type:'test',children:['foo']}`)
+</test>`).code).toBe(`{type:'test',props:{children:['foo']}}`)
       expect(transform(`<test>
 
   foo
 
   bar
 
-</test>`).code).toBe(`{type:'test',children:['foo bar']}`)
+</test>`).code).toBe(`{type:'test',props:{children:['foo bar']}}`)
     })
     test('element children', () => {
-      expect(transform('<foo><bar /></foo>').code).toBe("{type:'foo',children:[{type:'bar'}]}")
+      expect(transform('<foo><bar /></foo>').code).toBe("{type:'foo',props:{children:[{type:'bar'}]}}")
       expect(transform(`<foo
 test>
 <bar />
-</foo>`).code).toBe(`{type:'foo',props:{test:true},children:[{type:'bar'}]}`)
+</foo>`).code).toBe(`{type:'foo',props:{test:true,children:[{type:'bar'}]}}`)
     })
     it('should render space', () => {
       expect(transform("<>Hello {'world'} !</>").code).toBe("['Hello ','world',' !']")
       expect(transform("<>Hello    {'world'} !</>").code).toBe("['Hello ','world',' !']")
       expect(transform("<>{1} {2}</>").code).toBe("[1,' ',2]")
-      expect(transform("<div>Hello {'world'} !</div>").code).toBe("{type:'div',children:['Hello ','world',' !']}")
-      expect(transform("<div>Hello {'world'}   ! </div>").code).toBe("{type:'div',children:['Hello ','world',' !']}")
-      expect(transform("<div>{1} {2}</div>").code).toBe("{type:'div',children:[1,' ',2]}")
+      expect(transform("<div>Hello {'world'} !</div>").code).toBe("{type:'div',props:{children:['Hello ','world',' !']}}")
+      expect(transform("<div>Hello {'world'}   ! </div>").code).toBe("{type:'div',props:{children:['Hello ','world',' !']}}")
+      expect(transform("<div>{1} {2}</div>").code).toBe("{type:'div',props:{children:[1,' ',2]}}")
       expect(transform(`<>
   Hello {'World'}!
 </>`).code).toBe("['Hello ','World','!']")
@@ -156,6 +156,11 @@ test />`).code).toBe(`{type:'test',props:{...{},test:true}}`)
         expect(transform(`<test set:foo />`).code).toBe(`{type:'test',props:{foo:true}}`)
         expect(transform(`<test set:foo="test" />`).code).toBe(`{type:'test',props:{foo:"test"}}`)
         expect(transform(`<test set:foo={1 + 1} />`).code).toBe(`{type:'test',props:{foo:1 + 1}}`)
+      })
+      test('with children', () => {
+        expect(transform(`<test foo>bar</test>`).code).toBe(`{type:'test',props:{foo:true,children:['bar']}}`)
+        expect(transform(`<test children="foo">bar</test>`).code).toBe(`{type:'test',props:{children:['bar']}}`)
+        expect(transform(`<test foo children="foo" bar>bar</test>`).code).toBe(`{type:'test',props:{foo:true,bar:true,children:['bar']}}`)
       })
     })
     it('should add parentheses', () => {

@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.0
+
+### v2.0.0 [![01.05.2025](https://img.shields.io/date/1746120186)](https://github.com/d8corp/innet-jsx/tree/v2.0.0)
+
+- add `children` into `props`
+
 ## v1.4
 
 ### v1.4.0 [![03.04.2025](https://img.shields.io/date/1743628601)](https://github.com/d8corp/innet-jsx/tree/v1.4.0)

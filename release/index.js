@@ -97,6 +97,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
             magicString.overwrite(start, end, ']');
         },
         JSXElement({ children, openingElement }) {
+            const hasAttributes = Boolean(openingElement.attributes.filter(({ name }) => (name === null || name === void 0 ? void 0 : name.name) !== 'children').length);
             let childrenStarted = false;
             let lastEnd;
             for (let i = 0; i < children.length; i++) {
@@ -104,7 +105,13 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
                 lastEnd = end;
                 if (type !== 'JSXText' || result) {
                     if (!childrenStarted) {
-                        magicString.appendLeft(openingElement.end, ',children:[');
+                        if (hasAttributes) {
+                            const propsEnd = openingElement.attributes[openingElement.attributes.length - 1].end;
+                            magicString.appendLeft(propsEnd, ',children:[');
+                        }
+                        else {
+                            magicString.appendLeft(openingElement.end, ',props:{children:[');
+                        }
                         childrenStarted = true;
                     }
                     else {
@@ -113,7 +120,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
                 }
             }
             if (childrenStarted) {
-                magicString.appendRight(lastEnd, ']');
+                magicString.appendRight(lastEnd, ']}');
             }
         },
         JSXOpeningElement({ start, end, name, selfClosing, attributes }) {
@@ -126,28 +133,33 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
                 magicString.appendLeft(name.start, stringSym);
                 magicString.appendLeft(name.end, stringSym);
             }
-            let lastEnd = name.end;
+            const lastEnd = !(attributes === null || attributes === void 0 ? void 0 : attributes.length) ? name.end : attributes[attributes.length - 1].end;
+            if (selfClosing) {
+                magicString.overwrite(lastEnd, end, `}`);
+            }
+            else {
+                magicString.remove(lastEnd, end);
+            }
             if (attributes) {
+                let lastEnd = name.end;
                 for (let i = 0; i < attributes.length; i++) {
                     const attribute = attributes[i];
                     magicString.remove(lastEnd, attribute.start);
                     lastEnd = attribute.end;
+                    if (!selfClosing && attribute.name.name === 'children') {
+                        magicString.remove(attribute.start, attribute.end);
+                        continue;
+                    }
                     if (!i) {
                         magicString.appendLeft(name.end, ',props:{');
                     }
                     else {
                         magicString.appendLeft(attribute.start - 1, ',');
                     }
-                    if (i + 1 === attributes.length) {
-                        magicString.appendLeft(attribute.end, '}');
+                    if (i + 1 === attributes.length && selfClosing) {
+                        magicString.appendRight(attribute.end, '}');
                     }
                 }
-            }
-            if (selfClosing) {
-                magicString.overwrite(lastEnd, end, `}`);
-            }
-            else {
-                magicString.remove(lastEnd, end);
             }
         },
         JSXClosingElement({ start, end }) {

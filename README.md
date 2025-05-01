@@ -62,7 +62,7 @@ innet-jsx test.jsx -w
 ```
 
 ### Node.js
-You can install it local to the project
+You can use it in a Node.js project
 ```shell
 npm i -D innet-jsx
 # or
@@ -112,21 +112,13 @@ A fragment converts to an array
 </> // [1,' ',2]
 ```
 
-An element converts to an object
+An element converts to an object with `type` field, that equals a component or a string.
 ```typescript jsx
 <div /> // {type:'div'}
 <div></div> // {type:'div'}
 ```
 
-Children of an element contains in `children` field
-```typescript jsx
-<div>1</div> // {type:'div',children:['1']}
-<div>{2}</div> // {type:'div',children:[2]}
-<div><span /></div>
-// {type:'div',children:[{type:'span'}]}
-```
-
-Props of an element contains in `props` field
+The `props` field of a JSX element contains attributes of the element.
 ```typescript jsx
 <div id='test' /> // {type:'div',props:{id:'test'}}
 
@@ -136,6 +128,14 @@ Props of an element contains in `props` field
 const test = 1;
 <div children={<>test: {test}</>} />
 // {type:'div',props:{children:['test: ',test]}}
+```
+
+The `children` prop contains body of the element
+```typescript jsx
+<div>1</div> // {type:'div',props:{children:['1']}}
+<div>{2}</div> // {type:'div',props:{children:[2]}}
+<div><span /></div>
+// {type:'div',props:{children:[{type:'span'}]}}
 ```
 
 ## Issues
