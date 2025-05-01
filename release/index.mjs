@@ -90,6 +90,8 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
         },
         JSXElement({ children, openingElement }) {
             const hasAttributes = Boolean(openingElement.attributes.filter(({ name }) => (name === null || name === void 0 ? void 0 : name.name) !== 'children').length);
+            const childrenStartSymbol = children.length > 1 ? '[' : '';
+            const childrenEndSymbol = children.length > 1 ? ']' : '';
             let childrenStarted = false;
             let lastEnd;
             for (let i = 0; i < children.length; i++) {
@@ -99,10 +101,10 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
                     if (!childrenStarted) {
                         if (hasAttributes) {
                             const propsEnd = openingElement.attributes[openingElement.attributes.length - 1].end;
-                            magicString.appendLeft(propsEnd, ',children:[');
+                            magicString.appendLeft(propsEnd, `,children:${childrenStartSymbol}`);
                         }
                         else {
-                            magicString.appendLeft(openingElement.end, ',props:{children:[');
+                            magicString.appendLeft(openingElement.end, `,props:{children:${childrenStartSymbol}`);
                         }
                         childrenStarted = true;
                     }
@@ -112,7 +114,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
                 }
             }
             if (childrenStarted) {
-                magicString.appendRight(lastEnd, ']}');
+                magicString.appendRight(lastEnd, `${childrenEndSymbol}}`);
             }
         },
         JSXOpeningElement({ start, end, name, selfClosing, attributes }) {

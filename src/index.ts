@@ -127,6 +127,8 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
     },
     JSXElement ({ children, openingElement }) {
       const hasAttributes = Boolean(openingElement.attributes.filter(({name}) => name?.name !== 'children').length)
+      const childrenStartSymbol = children.length > 1 ? '[' : ''
+      const childrenEndSymbol = children.length > 1 ? ']' : ''
       let childrenStarted = false
       let lastEnd
       for (let i = 0; i < children.length; i++) {
@@ -136,9 +138,9 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
           if (!childrenStarted) {
             if (hasAttributes) {
               const propsEnd = openingElement.attributes[openingElement.attributes.length - 1].end
-              magicString.appendLeft(propsEnd, ',children:[')
+              magicString.appendLeft(propsEnd, `,children:${childrenStartSymbol}`)
             } else {
-              magicString.appendLeft(openingElement.end, ',props:{children:[')
+              magicString.appendLeft(openingElement.end, `,props:{children:${childrenStartSymbol}`)
             }
             childrenStarted = true
           } else {
@@ -148,7 +150,7 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
       }
 
       if (childrenStarted) {
-        magicString.appendRight(lastEnd, ']}')
+        magicString.appendRight(lastEnd, `${childrenEndSymbol}}`)
       }
     },
     JSXOpeningElement ({ start, end, name, selfClosing, attributes }) {

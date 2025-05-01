@@ -77,25 +77,25 @@ describe('innet-jsx', () => {
 </test>`).code).toBe(`{type:'test'}`)
     })
     test('inline children', () => {
-      expect(transform('<test>foo</test>').code).toBe("{type:'test',props:{children:['foo']}}")
+      expect(transform('<test>foo</test>').code).toBe("{type:'test',props:{children:'foo'}}")
       expect(transform(`<test>
   foo
-</test>`).code).toBe(`{type:'test',props:{children:['foo']}}`)
+</test>`).code).toBe(`{type:'test',props:{children:'foo'}}`)
       expect(transform(`<test>
 
   foo
 
-</test>`).code).toBe(`{type:'test',props:{children:['foo']}}`)
+</test>`).code).toBe(`{type:'test',props:{children:'foo'}}`)
       expect(transform(`<test>
 
   foo
 
   bar
 
-</test>`).code).toBe(`{type:'test',props:{children:['foo bar']}}`)
+</test>`).code).toBe(`{type:'test',props:{children:'foo bar'}}`)
     })
     test('element children', () => {
-      expect(transform('<foo><bar /></foo>').code).toBe("{type:'foo',props:{children:[{type:'bar'}]}}")
+      expect(transform('<foo><bar /></foo>').code).toBe("{type:'foo',props:{children:{type:'bar'}}}")
       expect(transform(`<foo
 test>
 <bar />
@@ -158,9 +158,10 @@ test />`).code).toBe(`{type:'test',props:{...{},test:true}}`)
         expect(transform(`<test set:foo={1 + 1} />`).code).toBe(`{type:'test',props:{foo:1 + 1}}`)
       })
       test('with children', () => {
-        expect(transform(`<test foo>bar</test>`).code).toBe(`{type:'test',props:{foo:true,children:['bar']}}`)
-        expect(transform(`<test children="foo">bar</test>`).code).toBe(`{type:'test',props:{children:['bar']}}`)
-        expect(transform(`<test foo children="foo" bar>bar</test>`).code).toBe(`{type:'test',props:{foo:true,bar:true,children:['bar']}}`)
+        expect(transform(`<test foo>bar</test>`).code).toBe(`{type:'test',props:{foo:true,children:'bar'}}`)
+        expect(transform(`<test children="foo">bar</test>`).code).toBe(`{type:'test',props:{children:'bar'}}`)
+        expect(transform(`<test children="foo">{1}{2}</test>`).code).toBe(`{type:'test',props:{children:[1,2]}}`)
+        expect(transform(`<test foo children="foo" bar>bar</test>`).code).toBe(`{type:'test',props:{foo:true,bar:true,children:'bar'}}`)
       })
     })
     it('should add parentheses', () => {

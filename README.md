@@ -132,10 +132,11 @@ const test = 1;
 
 The `children` prop contains body of the element
 ```typescript jsx
-<div>1</div> // {type:'div',props:{children:['1']}}
-<div>{2}</div> // {type:'div',props:{children:[2]}}
+<div>1</div> // {type:'div',props:{children:'1'}}
+<div>{2}</div> // {type:'div',props:{children:2}}
+<div>1{2}</div> // {type:'div',props:{children:['1',2]}}
 <div><span /></div>
-// {type:'div',props:{children:[{type:'span'}]}}
+// {type:'div',props:{children:{type:'span'}}}
 ```
 
 ## Issues
