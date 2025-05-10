@@ -171,6 +171,14 @@ test />`).code).toBe(`{type:'test',props:{...{},test:true}}`)
       expect(transform('() => <>123</>').code).toBe("() => ['123']")
     });
   })
+  describe('deep type', () => {
+    it('should render deep', () => {
+      expect(transform("const foo = { bar: 'test' };const test = <foo.bar />").code)
+        .toBe("const foo = { bar: 'test' };const test = {type:foo.bar}")
+      expect(transform("const foo = { bar: { baz: 'test' } };const test = <foo.bar.baz />").code)
+        .toBe("const foo = { bar: { baz: 'test' } };const test = {type:foo.bar.baz}")
+    });
+  })
   describe('source map', () => {
     test('simple', () => {
       const data = transform(`<div />`, { jsFile: 'index.js', jsxFile: 'index.jsx' })

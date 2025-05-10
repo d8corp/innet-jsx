@@ -154,10 +154,7 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
       }
     },
     JSXOpeningElement ({ start, end, name, selfClosing, attributes }) {
-      const fullName = name.type === 'JSXMemberExpression'
-        ? `${name.object.name}.${name.property.name}`
-        : name.name || ''
-      const stringSym = /[a-z]/.test(fullName[0]) ? "'" : ''
+      const stringSym = name.type === 'JSXMemberExpression' ? '' : "'"
 
       magicString.overwrite(start, start + 1, '{type:')
 

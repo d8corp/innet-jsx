@@ -1,6 +1,6 @@
 {
   "name": "innet-jsx",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "JSX parser for innet",
   "homepage": "https://github.com/d8corp/innet-jsx",
   "author": "Mikhail Lysikov <d8corp@mail.ru>",
@@ -38,10 +38,10 @@
     "innet-jsx": "bin/innet-jsx"
   },
   "dependencies": {
-    "acorn": "^8.4.0",
-    "acorn-jsx": "^5.3.1",
+    "acorn": "^8.14.1",
+    "acorn-jsx": "^5.3.2",
     "acorn-jsx-walk": "^2.0.0",
-    "acorn-walk": "^8.1.0",
+    "acorn-walk": "^8.3.4",
     "commander": "^7.2.0",
     "magic-string": "^0.25.7",
     "merge-source-map": "^1.1.0"
