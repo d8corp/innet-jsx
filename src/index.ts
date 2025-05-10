@@ -154,7 +154,7 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
       }
     },
     JSXOpeningElement ({ start, end, name, selfClosing, attributes }) {
-      const stringSym = name.type === 'JSXMemberExpression' ? '' : "'"
+      const stringSym = name.type === 'JSXMemberExpression' || !/[a-z]/.test(name.name?.[0] || '') ? '' : "'"
 
       magicString.overwrite(start, start + 1, '{type:')
 

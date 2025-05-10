@@ -118,7 +118,8 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
             }
         },
         JSXOpeningElement({ start, end, name, selfClosing, attributes }) {
-            const stringSym = name.type === 'JSXMemberExpression' ? '' : "'";
+            var _a;
+            const stringSym = name.type === 'JSXMemberExpression' || !/[a-z]/.test(((_a = name.name) === null || _a === void 0 ? void 0 : _a[0]) || '') ? '' : "'";
             magicString.overwrite(start, start + 1, '{type:');
             if (stringSym) {
                 magicString.appendLeft(name.start, stringSym);

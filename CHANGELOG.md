@@ -2,6 +2,10 @@
 
 ## v2.0
 
+### v2.0.3 [![10.05.2025](https://img.shields.io/date/1746880659)](https://github.com/d8corp/innet-jsx/tree/v2.0.3)
+
+- fixed deep JSXElement type
+
 ### v2.0.2 [![10.05.2025](https://img.shields.io/date/1746877700)](https://github.com/d8corp/innet-jsx/tree/v2.0.2)
 
 - fixed deep JSXElement type

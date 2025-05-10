@@ -173,8 +173,15 @@ test />`).code).toBe(`{type:'test',props:{...{},test:true}}`)
   })
   describe('deep type', () => {
     it('should render deep', () => {
+      expect(transform("const foo = 'test';const test = <foo />").code)
+        .toBe("const foo = 'test';const test = {type:'foo'}")
+
+      expect(transform("const Foo = 'test';const test = <Foo />").code)
+        .toBe("const Foo = 'test';const test = {type:Foo}")
+
       expect(transform("const foo = { bar: 'test' };const test = <foo.bar />").code)
         .toBe("const foo = { bar: 'test' };const test = {type:foo.bar}")
+
       expect(transform("const foo = { bar: { baz: 'test' } };const test = <foo.bar.baz />").code)
         .toBe("const foo = { bar: { baz: 'test' } };const test = {type:foo.bar.baz}")
     });
