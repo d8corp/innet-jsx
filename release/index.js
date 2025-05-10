@@ -134,7 +134,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
             }
         },
         JSXOpeningElement({ start, end, name, selfClosing, attributes }) {
-            var _a;
+            var _a, _b;
             const stringSym = name.type === 'JSXMemberExpression' || !/[a-z]/.test(((_a = name.name) === null || _a === void 0 ? void 0 : _a[0]) || '') ? '' : "'";
             magicString.overwrite(start, start + 1, '{type:');
             if (stringSym) {
@@ -154,7 +154,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
                     const attribute = attributes[i];
                     magicString.remove(lastEnd, attribute.start);
                     lastEnd = attribute.end;
-                    if (!selfClosing && attribute.name.name === 'children') {
+                    if (!selfClosing && ((_b = attribute.name) === null || _b === void 0 ? void 0 : _b.name) === 'children') {
                         magicString.remove(attribute.start, attribute.end);
                         continue;
                     }

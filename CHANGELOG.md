@@ -2,6 +2,10 @@
 
 ## v2.0
 
+### v2.0.7[![11.05.2025](https://img.shields.io/date/1746916539)](https://github.com/d8corp/innet-jsx/tree/v2.0.7)
+
+- fixed spread attributes bug
+
 ### v2.0.6 [![11.05.2025](https://img.shields.io/date/1746916079)](https://github.com/d8corp/innet-jsx/tree/v2.0.6)
 
 - fixed children array when children with new line

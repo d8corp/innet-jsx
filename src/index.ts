@@ -188,7 +188,7 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
           magicString.remove(lastEnd, attribute.start)
           lastEnd = attribute.end
 
-          if (!selfClosing && attribute.name.name === 'children') {
+          if (!selfClosing && attribute.name?.name === 'children') {
             magicString.remove(attribute.start, attribute.end)
             continue;
           }
