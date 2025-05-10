@@ -96,10 +96,11 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
         JSXClosingFragment({ start, end }) {
             magicString.overwrite(start, end, ']');
         },
-        JSXElement({ children, openingElement }) {
+        JSXElement({ children, openingElement, end }) {
             const hasAttributes = Boolean(openingElement.attributes.filter(({ name }) => (name === null || name === void 0 ? void 0 : name.name) !== 'children').length);
-            const childrenStartSymbol = children.length > 1 ? '[' : '';
-            const childrenEndSymbol = children.length > 1 ? ']' : '';
+            const addArray = children.length > 1 || !children.some(node => node.type !== 'JSXExpressionContainer' || node.expression.type !== 'JSXEmptyExpression');
+            const childrenStartSymbol = addArray ? '[' : '';
+            const childrenEndSymbol = addArray ? ']' : '';
             let childrenStarted = false;
             let lastEnd;
             for (let i = 0; i < children.length; i++) {
@@ -123,6 +124,9 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
             }
             if (childrenStarted) {
                 magicString.appendRight(lastEnd, `${childrenEndSymbol}}`);
+            }
+            else if (hasAttributes && !openingElement.selfClosing) {
+                magicString.appendRight(end, '}');
             }
         },
         JSXOpeningElement({ start, end, name, selfClosing, attributes }) {

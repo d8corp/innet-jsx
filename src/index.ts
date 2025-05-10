@@ -125,10 +125,11 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
     JSXClosingFragment ({ start, end }) {
       magicString.overwrite(start, end, ']')
     },
-    JSXElement ({ children, openingElement }) {
+    JSXElement ({ children, openingElement, end }) {
       const hasAttributes = Boolean(openingElement.attributes.filter(({name}) => name?.name !== 'children').length)
-      const childrenStartSymbol = children.length > 1 ? '[' : ''
-      const childrenEndSymbol = children.length > 1 ? ']' : ''
+      const addArray = children.length > 1 || !children.some(node => node.type !== 'JSXExpressionContainer' || node.expression.type !== 'JSXEmptyExpression')
+      const childrenStartSymbol = addArray ? '[' : ''
+      const childrenEndSymbol = addArray ? ']' : ''
       let childrenStarted = false
       let lastEnd
       for (let i = 0; i < children.length; i++) {
@@ -151,6 +152,8 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
 
       if (childrenStarted) {
         magicString.appendRight(lastEnd, `${childrenEndSymbol}}`)
+      } else if (hasAttributes && !openingElement.selfClosing) {
+        magicString.appendRight(end, '}')
       }
     },
     JSXOpeningElement ({ start, end, name, selfClosing, attributes }) {

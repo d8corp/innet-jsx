@@ -186,6 +186,15 @@ test />`).code).toBe(`{type:'test',props:{...{},test:true}}`)
         .toBe("const foo = { bar: { baz: 'test' } };const test = {type:foo.bar.baz}")
     });
   })
+  describe('comment', () => {
+    it('should add array', () => {
+      expect(transform("<env is='dev'></env>").code)
+        .toBe("{type:'env',props:{is:'dev'}}")
+
+      expect(transform("<env is='dev'>{/* <dts path='src/api.d.ts' /> */}</env>").code)
+        .toBe("{type:'env',props:{is:'dev',children:[/* <dts path='src/api.d.ts' /> */]}}")
+    });
+  })
   describe('source map', () => {
     test('simple', () => {
       const data = transform(`<div />`, { jsFile: 'index.js', jsxFile: 'index.jsx' })
