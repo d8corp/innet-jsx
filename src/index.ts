@@ -158,7 +158,7 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
       if (childrenStarted) {
         magicString.appendRight(lastEnd, `${childrenEndSymbol}}`)
       } else if (hasAttributes && !openingElement.selfClosing) {
-        magicString.appendRight(end, '}')
+        magicString.appendLeft(end, '}')
       }
     },
     JSXOpeningElement ({ start, end, name, selfClosing, attributes }) {

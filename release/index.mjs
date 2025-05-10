@@ -122,7 +122,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
                 magicString.appendRight(lastEnd, `${childrenEndSymbol}}`);
             }
             else if (hasAttributes && !openingElement.selfClosing) {
-                magicString.appendRight(end, '}');
+                magicString.appendLeft(end, '}');
             }
         },
         JSXOpeningElement({ start, end, name, selfClosing, attributes }) {

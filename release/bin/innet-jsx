@@ -131,7 +131,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
                 magicString.appendRight(lastEnd, `${childrenEndSymbol}}`);
             }
             else if (hasAttributes && !openingElement.selfClosing) {
-                magicString.appendRight(end, '}');
+                magicString.appendLeft(end, '}');
             }
         },
         JSXOpeningElement({ start, end, name, selfClosing, attributes }) {
@@ -233,7 +233,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
 }
 
 (function () {
-  const env = {"INNETJS_JSX_PACKAGE_VERSION":"2.0.5"};
+  const env = {"INNETJS_JSX_PACKAGE_VERSION":"2.0.6"};
   if (typeof process === 'undefined') {
     globalThis.process = { env: env };
   } else if (process.env) {

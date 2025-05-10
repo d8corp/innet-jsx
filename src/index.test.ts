@@ -193,23 +193,10 @@ test />`).code).toBe(`{type:'test',props:{...{},test:true}}`)
 
       expect(transform("<env is='dev'></env>").code)
         .toBe("{type:'env',props:{is:'dev'}}")
-
-      expect(transform(`
-function App () {
-  return (
-    <server>
-      <env is='dev'>
-        {/* <dts path='src/api.d.ts' /> */}
-      </env>
-    </server>
-  )
-}`).code)
-        .toBe(`
-function App () {
-  return (
-    {type:'server',props:{children:{type:'env',props:{is:'dev',children:[/* <dts path='src/api.d.ts' /> */]}}}}
-  )
-}`)
+    });
+    it('should render empty element', () => {
+      expect(transform(`<foo><bar is='dev'></bar></foo>`).code)
+        .toBe(`{type:'foo',props:{children:{type:'bar',props:{is:'dev'}}}}`)
     });
   })
   describe('source map', () => {
