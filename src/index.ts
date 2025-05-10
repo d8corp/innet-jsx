@@ -127,7 +127,12 @@ export function transform (code: TransformResult | string, { map, jsxFile, jsFil
     },
     JSXElement ({ children, openingElement, end }) {
       const hasAttributes = Boolean(openingElement.attributes.filter(({name}) => name?.name !== 'children').length)
-      const addArray = children.length > 1 || !children.some(node => node.type !== 'JSXExpressionContainer' || node.expression.type !== 'JSXEmptyExpression')
+
+      const addArray = children.filter(node => {
+        if (node.type === 'JSXText' && !node.result) return false;
+        return true
+      }).length > 1 || children.some(node => node.type === 'JSXExpressionContainer' && node.expression.type === 'JSXEmptyExpression')
+
       const childrenStartSymbol = addArray ? '[' : ''
       const childrenEndSymbol = addArray ? ']' : ''
       let childrenStarted = false

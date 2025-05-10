@@ -99,7 +99,7 @@ describe('innet-jsx', () => {
       expect(transform(`<foo
 test>
 <bar />
-</foo>`).code).toBe(`{type:'foo',props:{test:true,children:[{type:'bar'}]}}`)
+</foo>`).code).toBe(`{type:'foo',props:{test:true,children:{type:'bar'}}}`)
     })
     it('should render space', () => {
       expect(transform("<>Hello {'world'} !</>").code).toBe("['Hello ','world',' !']")
@@ -188,11 +188,28 @@ test />`).code).toBe(`{type:'test',props:{...{},test:true}}`)
   })
   describe('comment', () => {
     it('should add array', () => {
+      expect(transform("<env is='dev'>{/* <dts path='src/api.d.ts' /> */}</env>").code)
+        .toBe("{type:'env',props:{is:'dev',children:[/* <dts path='src/api.d.ts' /> */]}}")
+
       expect(transform("<env is='dev'></env>").code)
         .toBe("{type:'env',props:{is:'dev'}}")
 
-      expect(transform("<env is='dev'>{/* <dts path='src/api.d.ts' /> */}</env>").code)
-        .toBe("{type:'env',props:{is:'dev',children:[/* <dts path='src/api.d.ts' /> */]}}")
+      expect(transform(`
+function App () {
+  return (
+    <server>
+      <env is='dev'>
+        {/* <dts path='src/api.d.ts' /> */}
+      </env>
+    </server>
+  )
+}`).code)
+        .toBe(`
+function App () {
+  return (
+    {type:'server',props:{children:{type:'env',props:{is:'dev',children:[/* <dts path='src/api.d.ts' /> */]}}}}
+  )
+}`)
     });
   })
   describe('source map', () => {

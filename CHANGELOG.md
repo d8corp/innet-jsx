@@ -2,6 +2,10 @@
 
 ## v2.0
 
+### v2.0.5 [![11.05.2025](https://img.shields.io/date/1746914343)](https://github.com/d8corp/innet-jsx/tree/v2.0.5)
+
+- fixed children array when children with new line
+
 ### v2.0.4 [![11.05.2025](https://img.shields.io/date/1746912453)](https://github.com/d8corp/innet-jsx/tree/v2.0.4)
 
 - fixed empty children with comment
