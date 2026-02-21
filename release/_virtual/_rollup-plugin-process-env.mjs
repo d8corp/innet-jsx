@@ -1,5 +1,5 @@
 ;(function () {
-  const env = {"INNETJS_JSX_PACKAGE_VERSION":"2.0.7"};
+  const env = {"__INNETJS_JSX__PACKAGE_VERSION":"2.0.8"};
   if (typeof process === 'undefined') {
     globalThis.process = { env: env };
   } else if (process.env) {

@@ -233,7 +233,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
 }
 
 (function () {
-  const env = {"INNETJS_JSX_PACKAGE_VERSION":"2.0.7"};
+  const env = {"__INNETJS_JSX__PACKAGE_VERSION":"2.0.8"};
   if (typeof process === 'undefined') {
     globalThis.process = { env: env };
   } else if (process.env) {
@@ -243,7 +243,7 @@ function transform(code, { map, jsxFile, jsFile, parser = parse } = {}) {
   }
 })();
 commander.program
-    .version(process.env.INNETJS_JSX_PACKAGE_VERSION, '-v, --version');
+    .version(process.env.__INNETJS_JSX__PACKAGE_VERSION, '-v, --version');
 commander.program
     .arguments('<jsx-file> [js-file]')
     .description('Converts <jsx-file> to <js-file>', {

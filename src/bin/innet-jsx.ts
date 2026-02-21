@@ -4,7 +4,7 @@ import fs from 'fs'
 import { program } from 'commander'
 
 program
-  .version(process.env.INNETJS_JSX_PACKAGE_VERSION, '-v, --version')
+  .version(process.env.__INNETJS_JSX__PACKAGE_VERSION, '-v, --version')
 
 program
   .arguments('<jsx-file> [js-file]')

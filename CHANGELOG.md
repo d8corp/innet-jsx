@@ -2,7 +2,11 @@
 
 ## v2.0
 
-### v2.0.7[![11.05.2025](https://img.shields.io/date/1746916539)](https://github.com/d8corp/innet-jsx/tree/v2.0.7)
+### v2.0.8 [![21.02.2026](https://img.shields.io/date/1771699094)](https://github.com/d8corp/innet-jsx/tree/v2.0.8)
+
+- Fix `INNETJS_JSX_PACKAGE_VERSION` bug
+
+### v2.0.7 [![11.05.2025](https://img.shields.io/date/1746916539)](https://github.com/d8corp/innet-jsx/tree/v2.0.7)
 
 - fixed spread attributes bug
 
